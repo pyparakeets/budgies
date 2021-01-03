@@ -10,7 +10,7 @@ class ThresholdOptimizer:
                  predicted_probabilities: Union[np.ndarray, pd.Series, list],
                  y_test: Union[np.ndarray, pd.Series, list],
                  search_space_size: int = 100):
-        self.predicted_probabilities = predicted_probabilities,
+        self.predicted_probabilities = predicted_probabilities
         self.search_space = np.linspace(0, 1, search_space_size)
         self.y_test = np.array(y_test)
         self.optimized_metrics = dict()
@@ -118,4 +118,4 @@ class ThresholdOptimizer:
 
     def optimize_metrics(self):  # TODO: Add support for optimizing only specific metrics
         for i in self._supported_metrics:
-            locals()[f'get_best_{i}_metrics']()
+            super(ThresholdOptimizer, self).__getattribute__(f'get_best_{i}_metrics')()
