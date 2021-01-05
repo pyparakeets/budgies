@@ -206,9 +206,11 @@ class ThresholdOptimizer:
                     If no metrics are applied, all metrics will be optimized for.
 
         """
-        metrics = [metric.lower() for metric in metrics]
-        assert all(metric in self._supported_metrics for metric in metrics)
+
         if metrics is None:
             metrics = self._supported_metrics
+        else:
+            metrics = [metric.lower() for metric in metrics]
+            assert all(metric in self._supported_metrics for metric in metrics)
         for i in metrics:
             super(ThresholdOptimizer, self).__getattribute__(f'get_best_{i}_metrics')()
