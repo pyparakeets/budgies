@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, precisio
 
 
 class ThresholdOptimizer:
-    def __init__(self,  # TODO: Need to add support for multidimensional input
+    def __init__(self,
                  predicted_probabilities: Union[np.ndarray, pd.Series, list],
                  y_test: Union[np.ndarray, pd.Series, list],
                  search_space_size: int = 100):
@@ -15,11 +15,14 @@ class ThresholdOptimizer:
         Args:
             predicted_probabilities: output from the application of test/validation data from model/estimator.
                 This should be a list, numpy array or pandas series containing probabilities
-                that are to be converted into class predictions
+                that are to be converted into class predictions. If multidimensional input is given,
+                it defaults to use predictions for class 1 during optimization.
             y_test: The true class values from the test/validation set passed into the model/estimator for predictions.
             search_space_size: The number of possible probability threshold values to optimze for
         """
         self.predicted_probabilities = predicted_probabilities
+        if len(self.predicted_probabilities.shape) == 2:
+            self.predicted_probabilities = self.predicted_probabilities[:, 1]
         self.search_space = np.linspace(0, 1, search_space_size)
         self.y_test = np.array(y_test)
         self.optimized_metrics = dict()
@@ -63,7 +66,7 @@ class ThresholdOptimizer:
             scores:
 
         Returns: best score and best threshold for a specified metric
-
+        # TODO: add support for maximizing or minizing metrics
         """
         best_score = max(scores)
         best_index = scores.index(best_score)
@@ -96,7 +99,7 @@ class ThresholdOptimizer:
         )
         return best_f1_score, best_f1_threshold
 
-    def get_best_sensitivity_metrics(self) -> Tuple[int,int]:
+    def get_best_sensitivity_metrics(self) -> Tuple[int, int]:
         """Optimizes threshold for sensitivity score
 
         Returns: best sensitivity score and threshold at which best sensitivity score occurs
@@ -180,9 +183,18 @@ class ThresholdOptimizer:
         )
         return best_recall_score, best_recall_threshold
 
-    def optimize_metrics(self):  # TODO: Add support for optimizing only specific metrics
+    def optimize_metrics(self,
+                         metrics: list = None):
         """Function to optimize for supported metrics in a batch format
 
+        Args:
+            metrics: Optional. Should be specified if only specific supported metrics are
+                    to be optimized. input must be a subset one of the supported metrics.
+
         """
-        for i in self._supported_metrics:
+        metrics = [metric.lower() for metric in metrics]
+        assert all(metric in self._supported_metrics for metric in metrics)
+        if metrics is None:
+            metrics = self._supported_metrics
+        for i in metrics:
             super(ThresholdOptimizer, self).__getattribute__(f'get_best_{i}_metrics')()
