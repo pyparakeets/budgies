@@ -58,17 +58,24 @@ class ThresholdOptimizer:
 
     def _get_best_metrics(self,
                           metric_type: str,
-                          scores: list) -> Tuple[int, int]:
+                          scores: list,
+                          optimization: str = 'max') -> Tuple[int, int]:
         """computes optimized metrics based which supported metric was specified
 
         Args:
+            optimization:
             metric_type:
             scores:
 
         Returns: best score and best threshold for a specified metric
-        # TODO: add support for maximizing or minizing metrics
+
         """
-        best_score = max(scores)
+        if optimization.lower() == 'max':
+            best_score = max(scores)
+        elif optimization.lower() == 'min':
+            best_score = min(scores)
+        else:
+            raise ValueError('Wrong value passed into optimization parameter. Should be max or min')
         best_index = scores.index(best_score)
         best_threshold = self.search_space[best_index]
         self.optimized_metrics.update(
@@ -95,7 +102,8 @@ class ThresholdOptimizer:
             f1_scores.append(f1_score(classes, self.y_test))
         best_f1_score, best_f1_threshold = self._get_best_metrics(
             metric_type='f1_score',
-            scores=f1_scores
+            scores=f1_scores,
+            optimization='max'
         )
         return best_f1_score, best_f1_threshold
 
@@ -113,7 +121,8 @@ class ThresholdOptimizer:
             sensitivity_scores.append(sensitivity)
         best_sensitivity_score, best_sensitivity_threshold = self._get_best_metrics(
             metric_type='sensitivity_score',
-            scores=sensitivity_scores
+            scores=sensitivity_scores,
+            optimization='max'
         )
         return best_sensitivity_score, best_sensitivity_threshold
 
@@ -131,7 +140,8 @@ class ThresholdOptimizer:
             specificity_scores.append(specificity)
         best_specificity_score, best_specificity_threshold = self._get_best_metrics(
             metric_type='specificity_score',
-            scores=specificity_scores
+            scores=specificity_scores,
+            optimization='max'
         )
         return best_specificity_score, best_specificity_threshold
 
@@ -147,7 +157,8 @@ class ThresholdOptimizer:
             accuracy_scores.append(accuracy_score(classes, self.y_test))
         best_accuracy_score, best_accuracy_threshold = self._get_best_metrics(
             metric_type='accuracy_score',
-            scores=accuracy_scores
+            scores=accuracy_scores,
+            optimization='max'
         )
         return best_accuracy_score, best_accuracy_threshold
 
@@ -163,7 +174,8 @@ class ThresholdOptimizer:
             precision_scores.append(precision_score(classes, self.y_test))
         best_precision_score, best_precision_threshold = self._get_best_metrics(
             metric_type='precision_score',
-            scores=precision_scores
+            scores=precision_scores,
+            optimization='max'
         )
         return best_precision_score, best_precision_threshold
 
@@ -179,7 +191,8 @@ class ThresholdOptimizer:
             recall_scores.append(recall_score(classes, self.y_test))
         best_recall_score, best_recall_threshold = self._get_best_metrics(
             metric_type='precision_score',
-            scores=recall_scores
+            scores=recall_scores,
+            optimization='max'
         )
         return best_recall_score, best_recall_threshold
 
@@ -190,6 +203,7 @@ class ThresholdOptimizer:
         Args:
             metrics: Optional. Should be specified if only specific supported metrics are
                     to be optimized. input must be a subset one of the supported metrics.
+                    If no metrics are applied, all metrics will be optimized for.
 
         """
         metrics = [metric.lower() for metric in metrics]
