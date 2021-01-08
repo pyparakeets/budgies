@@ -59,15 +59,18 @@ class ThresholdOptimizer:
     def _get_best_metrics(self,
                           metric_type: str,
                           scores: list,
-                          optimization: str = 'max') -> Tuple[int, int]:
+                          optimization: str = 'max',
+                          verbose: bool = True) -> Tuple[int, int]:
         """computes optimized metrics based which supported metric was specified
 
         Args:
-            optimization:
-            metric_type:
-            scores:
+            metric_type: The name of the mertic to optimize for. It should be one of the supported metrics
+            scores: Computed metrics for all threshold values in the search space
+            optimization: Optional. Indicator of whether to optimize by finding the maximum metric value
+                            or the minimum metric value
+            verbose: Optional. Option of whether to output results of optimization. Defaults to true
 
-        Returns: best score and best threshold for a specified metric
+        Returns: Best score and best threshold for a specified metric
 
         """
         if optimization.lower() == 'max':
@@ -87,13 +90,18 @@ class ThresholdOptimizer:
                 },
             },
         )
-        print(f'best {metric_type}: {best_score} occurs at threshold {best_threshold}')
+        if verbose:
+            print(f'best {metric_type}: {best_score} occurs at threshold {best_threshold}')
         return best_score, best_threshold
 
-    def get_best_f1_metrics(self) -> Tuple[int, int]:
+    def get_best_f1_metrics(self,
+                            verbose: bool = True) -> Tuple[int, int]:
         """Optimizes threshold for F1 score
 
         Returns: best F1 score and threshold at which best F1 score occurs
+
+        Args:
+            verbose: Optional. Option of whether to output results of optimization
 
         """
         f1_scores = list()
@@ -103,14 +111,19 @@ class ThresholdOptimizer:
         best_f1_score, best_f1_threshold = self._get_best_metrics(
             metric_type='f1_score',
             scores=f1_scores,
-            optimization='max'
+            optimization='max',
+            verbose=verbose
         )
         return best_f1_score, best_f1_threshold
 
-    def get_best_sensitivity_metrics(self) -> Tuple[int, int]:
+    def get_best_sensitivity_metrics(self,
+                                     verbose: bool = True) -> Tuple[int, int]:
         """Optimizes threshold for sensitivity score
 
         Returns: best sensitivity score and threshold at which best sensitivity score occurs
+
+        Args:
+            verbose: Optional. Option of whether to output results of optimization
 
         """
         sensitivity_scores = list()
@@ -122,14 +135,19 @@ class ThresholdOptimizer:
         best_sensitivity_score, best_sensitivity_threshold = self._get_best_metrics(
             metric_type='sensitivity_score',
             scores=sensitivity_scores,
-            optimization='max'
+            optimization='max',
+            verbose=verbose
         )
         return best_sensitivity_score, best_sensitivity_threshold
 
-    def get_best_specificity_metrics(self) -> Tuple[int, int]:
+    def get_best_specificity_metrics(self,
+                                     verbose: bool = True) -> Tuple[int, int]:
         """Optimizes threshold for specificity
 
         Returns: best specificity score and threshold at which best specificity score occurs
+
+        Args:
+            verbose: Optional. Option of whether to output results of optimization
 
         """
         specificity_scores = list()
@@ -141,14 +159,19 @@ class ThresholdOptimizer:
         best_specificity_score, best_specificity_threshold = self._get_best_metrics(
             metric_type='specificity_score',
             scores=specificity_scores,
-            optimization='max'
+            optimization='max',
+            verbose=verbose
         )
         return best_specificity_score, best_specificity_threshold
 
-    def get_best_accuracy_metrics(self) -> Tuple[int, int]:
+    def get_best_accuracy_metrics(self,
+                                  verbose: bool = True) -> Tuple[int, int]:
         """Optimizes threshold for accuracy
 
         Returns: best accuracy score and threshold at which best accuracy score occurs
+
+        Args:
+            verbose: Optional. Option of whether to output results of optimization
 
         """
         accuracy_scores = list()
@@ -162,10 +185,14 @@ class ThresholdOptimizer:
         )
         return best_accuracy_score, best_accuracy_threshold
 
-    def get_best_precision_metrics(self) -> Tuple[int, int]:
+    def get_best_precision_metrics(self,
+                                   verbose: bool = True) -> Tuple[int, int]:
         """Optimizes threshold for precision
 
         Returns: best precision score and threshold at which best precision score occurs
+
+        Args:
+            verbose: Optional. Option of whether to output results of optimization
 
         """
         precision_scores = list()
@@ -175,14 +202,19 @@ class ThresholdOptimizer:
         best_precision_score, best_precision_threshold = self._get_best_metrics(
             metric_type='precision_score',
             scores=precision_scores,
-            optimization='max'
+            optimization='max',
+            verbose=verbose
         )
         return best_precision_score, best_precision_threshold
 
-    def get_best_recall_metrics(self) -> Tuple[int, int]:
+    def get_best_recall_metrics(self,
+                                verbose: bool = True) -> Tuple[int, int]:
         """Optimizes threshold for recall
 
         Returns: best recall score and threshold at which best recall score occurs
+
+        Args:
+            verbose: Optional. Option of whether to output results of optimization
 
         """
         recall_scores = list()
@@ -192,15 +224,18 @@ class ThresholdOptimizer:
         best_recall_score, best_recall_threshold = self._get_best_metrics(
             metric_type='precision_score',
             scores=recall_scores,
-            optimization='max'
+            optimization='max',
+            verbose=verbose
         )
         return best_recall_score, best_recall_threshold
 
     def optimize_metrics(self,
-                         metrics: list = None):
+                         metrics: list = None,
+                         verbose: int = 1):
         """Function to optimize for supported metrics in a batch format
 
         Args:
+            verbose: Optional. Option of whether to output results of optimization
             metrics: Optional. Should be specified if only specific supported metrics are
                     to be optimized. input must be a subset one of the supported metrics.
                     If no metrics are applied, all metrics will be optimized for.
@@ -213,4 +248,4 @@ class ThresholdOptimizer:
             metrics = [metric.lower() for metric in metrics]
             assert all(metric in self._supported_metrics for metric in metrics)
         for i in metrics:
-            super(ThresholdOptimizer, self).__getattribute__(f'get_best_{i}_metrics')()
+            super(ThresholdOptimizer, self).__getattribute__(f'get_best_{i}_metrics')(verbose=verbose)
