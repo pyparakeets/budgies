@@ -1,5 +1,7 @@
 # budgies
 
+## Use Cases
+
 ## Installation
 
 ## Usage
