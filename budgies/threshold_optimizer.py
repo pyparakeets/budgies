@@ -7,24 +7,24 @@ from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, precisio
 
 class ThresholdOptimizer:
     def __init__(self,
-                 predicted_probabilities: Union[np.ndarray, pd.Series, list],
-                 y_test: Union[np.ndarray, pd.Series, list],
+                 y_score: Union[np.ndarray, pd.Series, list],
+                 y_true: Union[np.ndarray, pd.Series, list],
                  search_space_size: int = 100):
         """
 
         Args:
-            predicted_probabilities: output from the application of test/validation data from model/estimator.
+            y_score: output from the application of test/validation data from model/estimator.
                 This should be a list, numpy array or pandas series containing probabilities
                 that are to be converted into class predictions. If multidimensional input is given,
                 it defaults to use predictions for class 1 during optimization.
-            y_test: The true class values from the test/validation set passed into the model/estimator for predictions.
+            y_true: The true class values from the test/validation set passed into the model/estimator for predictions.
             search_space_size: The number of possible probability threshold values to optimze for
         """
-        self.predicted_probabilities = predicted_probabilities
-        if len(self.predicted_probabilities.shape) == 2:
-            self.predicted_probabilities = self.predicted_probabilities[:, 1]
+        self.y_score = y_score
+        if len(self.y_score.shape) == 2:
+            self.y_score = self.y_score[:, 1]
         self.search_space = np.linspace(0, 1, search_space_size)
-        self.y_test = np.array(y_test)
+        self.y_true = np.array(y_true)
         self.optimized_metrics = dict()
         self._supported_metrics = [
             'f1', 'accuracy', 'sensitivity', 'specificity',
@@ -53,32 +53,31 @@ class ThresholdOptimizer:
         Returns: 1 dimensional numpy array of classes
 
         """
-        classes = np.where(self.predicted_probabilities >= threshold, 1, 0)
+        classes = np.where(self.y_score >= threshold, 1, 0)
         return classes
 
     def _get_best_metrics(self,
                           metric_type: str,
                           scores: list,
-                          optimization: str = 'max',
+                          greater_is_better: bool = True,
                           verbose: bool = True) -> Tuple[int, int]:
         """computes optimized metrics based which supported metric was specified
 
         Args:
             metric_type: The name of the mertic to optimize for. It should be one of the supported metrics
             scores: Computed metrics for all threshold values in the search space
-            optimization: Optional. Indicator of whether to optimize by finding the maximum metric value
+            greater_is_better: Optional. Indicator of whether to optimize by finding the maximum metric value
                             or the minimum metric value
             verbose: Optional. Option of whether to output results of optimization. Defaults to true
 
         Returns: Best score and best threshold for a specified metric
 
         """
-        if optimization.lower() == 'max':
+        if greater_is_better:
             best_score = max(scores)
-        elif optimization.lower() == 'min':
-            best_score = min(scores)
         else:
-            raise ValueError('Wrong value passed into optimization parameter. Should be max or min')
+            best_score = min(scores)
+
         best_index = scores.index(best_score)
         best_threshold = self.search_space[best_index]
         self.optimized_metrics.update(
@@ -107,11 +106,11 @@ class ThresholdOptimizer:
         f1_scores = list()
         for i in self.search_space:
             classes = self.convert_classes(threshold=i)
-            f1_scores.append(f1_score(classes, self.y_test))
+            f1_scores.append(f1_score(classes, self.y_true))
         best_f1_score, best_f1_threshold = self._get_best_metrics(
             metric_type='f1_score',
             scores=f1_scores,
-            optimization='max',
+            greater_is_better=True,
             verbose=verbose
         )
         return best_f1_score, best_f1_threshold
@@ -129,13 +128,13 @@ class ThresholdOptimizer:
         sensitivity_scores = list()
         for i in self.search_space:
             classes = self.convert_classes(threshold=i)
-            tn, fp, fn, tp = confusion_matrix(self.y_test, classes).ravel()
+            tn, fp, fn, tp = confusion_matrix(self.y_true, classes).ravel()
             sensitivity = tp / (tp + fn)
             sensitivity_scores.append(sensitivity)
         best_sensitivity_score, best_sensitivity_threshold = self._get_best_metrics(
             metric_type='sensitivity_score',
             scores=sensitivity_scores,
-            optimization='max',
+            greater_is_better=True,
             verbose=verbose
         )
         return best_sensitivity_score, best_sensitivity_threshold
@@ -153,13 +152,13 @@ class ThresholdOptimizer:
         specificity_scores = list()
         for i in self.search_space:
             classes = self.convert_classes(threshold=i)
-            tn, fp, fn, tp = confusion_matrix(self.y_test, classes).ravel()
+            tn, fp, fn, tp = confusion_matrix(self.y_true, classes).ravel()
             specificity = tn / (tn + fp)
             specificity_scores.append(specificity)
         best_specificity_score, best_specificity_threshold = self._get_best_metrics(
             metric_type='specificity_score',
             scores=specificity_scores,
-            optimization='max',
+            greater_is_better=True,
             verbose=verbose
         )
         return best_specificity_score, best_specificity_threshold
@@ -177,11 +176,11 @@ class ThresholdOptimizer:
         accuracy_scores = list()
         for i in self.search_space:
             classes = self.convert_classes(threshold=i)
-            accuracy_scores.append(accuracy_score(classes, self.y_test))
+            accuracy_scores.append(accuracy_score(classes, self.y_true))
         best_accuracy_score, best_accuracy_threshold = self._get_best_metrics(
             metric_type='accuracy_score',
             scores=accuracy_scores,
-            optimization='max'
+            greater_is_better=True
         )
         return best_accuracy_score, best_accuracy_threshold
 
@@ -198,11 +197,11 @@ class ThresholdOptimizer:
         precision_scores = list()
         for i in self.search_space:
             classes = self.convert_classes(threshold=i)
-            precision_scores.append(precision_score(classes, self.y_test))
+            precision_scores.append(precision_score(classes, self.y_true))
         best_precision_score, best_precision_threshold = self._get_best_metrics(
             metric_type='precision_score',
             scores=precision_scores,
-            optimization='max',
+            greater_is_better=True,
             verbose=verbose
         )
         return best_precision_score, best_precision_threshold
@@ -220,11 +219,11 @@ class ThresholdOptimizer:
         recall_scores = list()
         for i in self.search_space:
             classes = self.convert_classes(threshold=i)
-            recall_scores.append(recall_score(classes, self.y_test))
+            recall_scores.append(recall_score(classes, self.y_true))
         best_recall_score, best_recall_threshold = self._get_best_metrics(
             metric_type='precision_score',
             scores=recall_scores,
-            optimization='max',
+            greater_is_better=True,
             verbose=verbose
         )
         return best_recall_score, best_recall_threshold
