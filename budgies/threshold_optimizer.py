@@ -23,7 +23,8 @@ class ThresholdOptimizer:
         self.y_score = y_score
         if len(self.y_score.shape) == 2:
             self.y_score = self.y_score[:, 1]
-        self.search_space = np.linspace(0, 1, search_space_size)
+        min_threshold, max_threshold = min(self.y_score), max(self.y_score)
+        self.search_space = np.linspace(min_threshold, max_threshold, search_space_size)
         self.y_true = np.array(y_true)
         self.optimized_metrics = dict()
         self._supported_metrics = [
