@@ -44,7 +44,7 @@ class ThresholdOptimizer:
         self.search_space = np.linspace(0, 1, search_space_size)
 
     def convert_classes(self,
-                        threshold: int) -> np.ndarray:
+                        threshold: float) -> np.ndarray:
         """Convert predicted probabilities into binary classes based on a threshold/cutoff value
 
         Args:
