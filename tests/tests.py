@@ -12,7 +12,7 @@ threshold_optimizer = ThresholdOptimizer(y_score,
                                          10)
 
 
-class MyTestCase(unittest.TestCase):
+class ThresholdOptimizerTestCases(unittest.TestCase):
     def test_convert_classes(self):
         test_classes = threshold_optimizer.convert_classes(0.3)
         expected_classes = np.array([0, 1, 1, 0, 1, 1, 1, 1, 0, 1])
