@@ -20,7 +20,7 @@ class ThresholdOptimizer:
             y_true: The true class values from the test/validation set passed into the model/estimator for predictions.
             search_space_size: The number of possible probability threshold values to optimze for
         """
-        self.y_score = y_score
+        self.y_score = np.array(y_score)
         if len(self.y_score.shape) == 2:
             self.y_score = self.y_score[:, 1]
         min_threshold, max_threshold = min(self.y_score), max(self.y_score)
