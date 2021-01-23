@@ -1,5 +1,23 @@
-# budgies
+# Budgies
+---
 
-## Installation
 
-## Usage
+## Introduction
+---
+
+
+### Requirements
+---
+
+
+### Installation
+---
+
+
+### Usage
+---
+
+
+### Key Terminologies
+---
+
