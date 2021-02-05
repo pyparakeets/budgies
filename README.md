@@ -7,15 +7,24 @@ Evaluating machine learning models is an important aspect of building models. Th
 
 For instance, in order to map a logistic regression value to a binary category, you must define a classification threshold (also called the decision threshold). In say a cancer patient classification, a value above that threshold indicates "Patient has cancer"; a value below indicates "Patient does not have cancer." It is tempting to assume that the classification threshold should always be 0.5, but thresholds are problem-dependent, and are therefore values that you must tune.
 
-This library allows you to output the optimum threshold value for the metric you're using to evaluate your classification model.
+This library allows you to output the optimum threshold value for the metric you're using to evaluate your classification model. The metrics for which you can get the optimum threshold outputs are: 
+> Accuracy
+
+> F1 Score
+
+> Recall
+
+> Specificity
+
+> Precision
 
 
 ### Requirements
->**scikit-learn** == 0.24.0
+> **scikit-learn** == 0.24.0
 
->**pandas** == 0.25.1
+> **pandas** == 0.25.1
 
->**numpy** == 1.17.1
+> **numpy** == 1.17.1
 
 
 ### Installation
@@ -26,16 +35,16 @@ This library allows you to output the optimum threshold value for the metric you
 
 **Code To Follow**
 
->1. load data and create train, validation and test sets
->2. run model on train data
->3. predict probabilities on validation set
->4. import threshold_optimizer
->5. create threshold_optimizer object
->6. pass predicted probabilities into threshold optimizer object
->7. call threshold_optimizer.optimze_accuracy (or whichever metric) and save returned probability_threshold_value
->8. predict probabilities on test set
->9. use saved threshold to create binary classes
->10. evaluate optimized classes with metric optimized for
+> 1. load data and create train, validation and test sets
+> 2. run model on train data
+> 3. predict probabilities on validation set
+> 4. import threshold_optimizer
+> 5. create threshold_optimizer object
+> 6. pass predicted probabilities into threshold optimizer object
+> 7. call threshold_optimizer.optimze_accuracy (or whichever metric) and save returned probability_threshold_value
+> 8. predict probabilities on test set
+> 9. use saved threshold to create binary classes
+> 10. evaluate optimized classes with metric optimized for
 
 
 ### Key Terminologies
