@@ -1,9 +1,8 @@
 # Budgies
 This python library allows you to conveniently evaluate predicted probablilities during a binary classification task by presenting you with the optimum probability thresholds.
 
-
 ## Introduction
-
+*Classification* tasks in machine learning involves models or algorithms learning to *assign class lables* to elements of a set. **Binary Classification** is the process of assignig elements to two class labels on the basis of a classification rule. Some of the examples of binary classification includes classifying mails under 'spam' or 'not a spam', medical tests ('cancer detected' or 'cancer not detected') and churn prediction ('churn' or 'not').           
 
 Evaluating machine learning models is an important aspect of building models. These evaluations are done using classification metrics, the metrics used depends on the nature of the problem you're solving and the cost of falsely predicted values. Some of these metrics include: confusion matrix, accuracy, precision, recall, F1 score and ROC curve. However these decisions by the metrics are based on a set threshold. 
 
