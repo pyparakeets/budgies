@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>threshold_optimizer package &#8212; threshold_optimizer 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="threshold-optimizer-package">
+<h1>threshold_optimizer package<a class="headerlink" href="#threshold-optimizer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-threshold_optimizer.threshold_optimizer">
+<span id="threshold-optimizer-threshold-optimizer-module"></span><h2>threshold_optimizer.threshold_optimizer module<a class="headerlink" href="#module-threshold_optimizer.threshold_optimizer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer">
+<em class="property">class </em><code class="sig-prename descclassname">threshold_optimizer.threshold_optimizer.</code><code class="sig-name descname">ThresholdOptimizer</code><span class="sig-paren">(</span><em class="sig-param">y_score: Union[numpy.ndarray, pandas.core.series.Series, list], y_true: Union[numpy.ndarray, pandas.core.series.Series, list], search_space_size: int = 100</em><span class="sig-paren">)</span><a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.convert_classes">
+<code class="sig-name descname">convert_classes</code><span class="sig-paren">(</span><em class="sig-param">threshold: float</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.convert_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert predicted probabilities into binary classes based on a threshold/cutoff value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>threshold</strong> – The probability threshold value to determine predicted classes.
+This follows a greater than or equal to format for determining class 1</p>
+</dd>
+</dl>
+<p>Returns: 1 dimensional numpy array of classes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_accuracy_metrics">
+<code class="sig-name descname">get_best_accuracy_metrics</code><span class="sig-paren">(</span><em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_accuracy_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes threshold for accuracy</p>
+<p>Returns: best accuracy score and threshold at which best accuracy score occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_f1_metrics">
+<code class="sig-name descname">get_best_f1_metrics</code><span class="sig-paren">(</span><em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_f1_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes threshold for F1 score</p>
+<p>Returns: best F1 score and threshold at which best F1 score occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_precision_metrics">
+<code class="sig-name descname">get_best_precision_metrics</code><span class="sig-paren">(</span><em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_precision_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes threshold for precision</p>
+<p>Returns: best precision score and threshold at which best precision score occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_recall_metrics">
+<code class="sig-name descname">get_best_recall_metrics</code><span class="sig-paren">(</span><em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_recall_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes threshold for recall</p>
+<p>Returns: best recall score and threshold at which best recall score occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_sensitivity_metrics">
+<code class="sig-name descname">get_best_sensitivity_metrics</code><span class="sig-paren">(</span><em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_sensitivity_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes threshold for sensitivity score</p>
+<p>Returns: best sensitivity score and threshold at which best sensitivity score occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_specificity_metrics">
+<code class="sig-name descname">get_best_specificity_metrics</code><span class="sig-paren">(</span><em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.get_best_specificity_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes threshold for specificity</p>
+<p>Returns: best specificity score and threshold at which best specificity score occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.optimize_metrics">
+<code class="sig-name descname">optimize_metrics</code><span class="sig-paren">(</span><em class="sig-param">metrics: list = None</em>, <em class="sig-param">verbose: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.optimize_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to optimize for supported metrics in a batch format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>verbose</strong> – Optional. Option of whether to output results of optimization</p></li>
+<li><p><strong>metrics</strong> – Optional. Should be specified if only specific supported metrics are
+to be optimized. input must be a subset one of the supported metrics.
+If no metrics are applied, all metrics will be optimized for.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="threshold_optimizer.threshold_optimizer.ThresholdOptimizer.set_search_space">
+<code class="sig-name descname">set_search_space</code><span class="sig-paren">(</span><em class="sig-param">search_space_size: int</em><span class="sig-paren">)</span><a class="headerlink" href="#threshold_optimizer.threshold_optimizer.ThresholdOptimizer.set_search_space" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the number of possible probability threshold values to optimze for</p>
+<p>This function is useful to reset the size of the search space after initializing the ThresholdOptimizer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>search_space_size</strong> – The number of possible probability threshold values to optimze for</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-threshold_optimizer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-threshold_optimizer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">threshold_optimizer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">threshold_optimizer package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-threshold_optimizer.threshold_optimizer">threshold_optimizer.threshold_optimizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-threshold_optimizer">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Mawuli Adjei, Wayne Yu, Tobel Eze Okoli, Adu Boahene.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/threshold_optimizer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
