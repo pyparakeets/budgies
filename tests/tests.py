@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from budgies.threshold_optimizer import ThresholdOptimizer
+from threshold_optimizer.threshold_optimizer import ThresholdOptimizer
 
 y_score = [0.1, 0.6, 0.8, 0.01, 0.55, 0.93, 0.3, 0.82, 0.22, 0.46]
 y_true = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0]

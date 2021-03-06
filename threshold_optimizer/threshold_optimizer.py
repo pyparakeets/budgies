@@ -181,7 +181,8 @@ class ThresholdOptimizer:
         best_accuracy_score, best_accuracy_threshold = self._get_best_metrics(
             metric_type='accuracy_score',
             scores=accuracy_scores,
-            greater_is_better=True
+            greater_is_better=True,
+            verbose=verbose
         )
         return best_accuracy_score, best_accuracy_threshold
 
@@ -231,7 +232,7 @@ class ThresholdOptimizer:
 
     def optimize_metrics(self,
                          metrics: list = None,
-                         verbose: int = 1):
+                         verbose: bool = True):
         """Function to optimize for supported metrics in a batch format
 
         Args:
